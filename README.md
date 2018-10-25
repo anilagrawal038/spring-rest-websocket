@@ -3,16 +3,16 @@ Sample Application that demonstrates how to Expose Spring Rest APIs through WebS
 
 Useful Informations
 
-#Home page to test Rest APIs through WebSocket
+## Home page to test Rest APIs through WebSocket
 http://localhost:8080/<app_name>
  or http://localhost:8080/<app_name>/index.html
 
-#API Documentation URL (Swagger URL)
+## API Documentation URL (Swagger URL)
 http://localhost:8080/<app_name>/api/swagger-ui.html
 
-#UnitTest for StudentService is StudentServiceTest.java
+## UnitTest for StudentService is StudentServiceTest.java
 
-#Student APIs are as below :
+## Student APIs are as below :
 
 
   #1- List Students

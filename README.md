@@ -28,7 +28,7 @@ http://localhost:8080/<app_name>/api/swagger-ui.html
         
   #2- Add Students
   
-        URL : http://localhost:8080/spring-jpa-rest-swagger/api/student
+        URL : http://localhost:8080/api/student
         
         Request : {"rollNo" : 90367,"firstName" : "asdf","lastName": "sdf","standard" : 5,"address":"555"}
         
@@ -39,7 +39,7 @@ http://localhost:8080/<app_name>/api/swagger-ui.html
         
   #3- Get Student Detail
   
-        URL : http://localhost:8080/spring-jpa-rest-swagger/api/student/3
+        URL : http://localhost:8080/api/student/3
         
         Request : N/A
         
@@ -50,7 +50,7 @@ http://localhost:8080/<app_name>/api/swagger-ui.html
         
   #4- Update Student
   
-        URL : http://localhost:8080/spring-jpa-rest-swagger/api/student/4
+        URL : http://localhost:8080/api/student/4
         
         Request : {"rollNo" : 90367,"firstName" : "asdf","lastName": "sdf","standard" : 5,"address":"555"}
         
@@ -61,7 +61,7 @@ http://localhost:8080/<app_name>/api/swagger-ui.html
         
   #5- Delete Students
   
-        URL : http://localhost:8080/spring-jpa-rest-swagger/api/student/3
+        URL : http://localhost:8080/api/student/3
         
         Request : N/A
         
@@ -72,7 +72,7 @@ http://localhost:8080/<app_name>/api/swagger-ui.html
         
   #6- Search Students
   
-        URL : http://localhost:8080/spring-jpa-rest-swagger/api/student
+        URL : http://localhost:8080/api/student
         
         Request : {"rollNo" : 90367,"firstName" : "asdf","lastName": "sdf","standard" : 5,"address":"555"}
         

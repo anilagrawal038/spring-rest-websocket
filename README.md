@@ -17,7 +17,7 @@ http://localhost:8080/<app_name>/api/swagger-ui.html
 
   #1- List Students
   
-        URL : http://localhost:8080/spring-jpa-rest-swagger/api/student
+        URL : http://localhost:8080/api/student
         
         Request : N/A
         

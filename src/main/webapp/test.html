@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Expose Rest APIs as WebSocket</title>
+<script type="text/javascript">
+
+var ws;
+
+var API_RESPONSE_HANDLER_MAPPING = {};
+
+var DEFAULT_API = 0;
+function defaultCallback(response) {
+	document.getElementById('greetings').innerHTML = " \n defaultCallback => " + response;
+}
+API_RESPONSE_HANDLER_MAPPING[DEFAULT_API] = defaultCallback;
+
+
+var FETCH_STUDENT_LIST_API = 1;
+function fetchStudentList() {
+	var requestObj = {
+			method : "GET",
+			action: "/student",
+			requestBody: "",
+			other: "",
+			requestId: FETCH_STUDENT_LIST_API,
+			broadcastResponse: false
+	};
+    ws.send(JSON.stringify(requestObj));
+}
+function fetchStudentListCallback(response) {
+	document.getElementById('greetings').innerHTML = " \n fetchStudentListCallback => " + response;
+}
+API_RESPONSE_HANDLER_MAPPING[FETCH_STUDENT_LIST_API] = fetchStudentListCallback;
+
+
+var FETCH_STUDENT_API = 2;
+function fetchStudent() {
+	var requestObj = {
+			method : "GET",
+			action: "/student/1",
+			requestBody: "",
+			other: "",
+			requestId: FETCH_STUDENT_API,
+			broadcastResponse: false
+	};
+    ws.send(JSON.stringify(requestObj));
+}
+function fetchStudentCallback(response) {
+	document.getElementById('greetings').innerHTML = " \n fetchStudentCallback => " + response;
+}
+API_RESPONSE_HANDLER_MAPPING[FETCH_STUDENT_API] = fetchStudentCallback;
+
+
+var SEARCH_STUDENT_API = 3;
+function searchStudent() {
+	var requestObj = {
+			method : "PATCH",
+			action: "/student",
+			requestBody: JSON.stringify({
+				  "firstName": "xyz",
+				  "lastName": "tappa",
+				  "rollNo": 123
+			}),
+			other: "",
+			requestId: SEARCH_STUDENT_API,
+			broadcastResponse: false
+	};
+    ws.send(JSON.stringify(requestObj));
+}
+function searchStudentCallback(response) {
+	document.getElementById('greetings').innerHTML = " \n searchStudentCallback => " + response;
+}
+API_RESPONSE_HANDLER_MAPPING[SEARCH_STUDENT_API] = searchStudentCallback;
+
+
+var ADD_STUDENT_API = 4;
+function addStudent() {
+	var requestObj = {
+			method : "POST",
+			action: "/student",
+			requestBody: JSON.stringify({
+				  "address": "address 1",
+				  "firstName": "xyz",
+				  "lastName": "tappa",
+				  "rollNo": 123,
+				  "standard": 10
+			}),
+			other: "",
+			requestId: ADD_STUDENT_API,
+			broadcastResponse: false
+	};
+    ws.send(JSON.stringify(requestObj));
+}
+function addStudentCallback(response) {
+	document.getElementById('greetings').innerHTML = " \n addStudentCallback => " + response;
+}
+API_RESPONSE_HANDLER_MAPPING[ADD_STUDENT_API] = addStudentCallback;
+
+
+var UPDATE_STUDENT_API = 5;
+function updateStudent() {
+	var requestObj = {
+			method : "PUT",
+			action: "/student/1",
+			requestBody: JSON.stringify({
+				  "address": "address 2",
+				  "firstName": "xyz",
+				  "lastName": "tappa",
+				  "rollNo": 123,
+				  "standard": 11
+			}),
+			other: "",
+			requestId: UPDATE_STUDENT_API,
+			broadcastResponse: false
+	};
+    ws.send(JSON.stringify(requestObj));
+}
+function updateStudentCallback(response) {
+	document.getElementById('greetings').innerHTML = " \n updateStudentCallback => " + response;
+}
+API_RESPONSE_HANDLER_MAPPING[UPDATE_STUDENT_API] = updateStudentCallback;
+
+
+var DELETE_STUDENT_API = 6;
+function deleteStudent() {
+	var requestObj = {
+			method : "DELETE",
+			action: "/student/1",
+			requestBody: "",
+			other: "",
+			requestId: DELETE_STUDENT_API,
+			broadcastResponse: false
+	};
+    ws.send(JSON.stringify(requestObj));
+}
+function deleteStudentCallback(response) {
+	document.getElementById('greetings').innerHTML = " \n deleteStudentCallback => " + response;
+}
+API_RESPONSE_HANDLER_MAPPING[DELETE_STUDENT_API] = deleteStudentCallback;
+
+
+
+function setConnected(connected) {
+	document.getElementById('connect').disabled = connected;
+	document.getElementById('disconnect').disabled = !connected;
+	document.getElementById('info').style.visibility = connected ? 'visible' : 'hidden';
+	document.getElementById('greetings').innerHTML = '';
+}
+
+function connect() {
+	ws = new WebSocket('ws://localhost:8080/ws/connectWebSocket');
+	ws.onmessage = function(res){
+		try{
+			var response = JSON.parse(res.data);
+			var callback = API_RESPONSE_HANDLER_MAPPING[response['requestId']];
+			if(callback){
+				callback(res.data);
+			}else{
+				API_RESPONSE_HANDLER_MAPPING[DEFAULT_API](res.data);
+			}
+		}catch(e){
+			API_RESPONSE_HANDLER_MAPPING[DEFAULT_API](res.data);
+		}
+	}
+	setConnected(true);
+}
+
+function disconnect() {
+    if (ws != null) {
+        ws.close();
+    }
+    setConnected(false);
+    console.log("Disconnected");
+}
+
+
+
+function showGreeting(message) {
+	// document.getElementById('greetings').innerHTML = document.getElementById('greetings').innerHTML+"    \n" + message;
+	document.getElementById('greetings').innerHTML = " \n" + message;
+}
+</script>
+</head>
+<body>
+	<noscript>
+		<h2>Enable Java script and reload this page to run Websocket Demo</h2>
+	</noscript>
+	<h1>Test Application exposing Spring Rest APIs through WebSockets</h1>
+	<div>
+		<div>
+			<button id="connect" onclick="connect();">Connect WebSocket</button>
+			<button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect WebSocket</button>
+			<br />
+			<br />
+		</div>
+		<div id="info">
+			<h3>Test Rest APIs exposed through WebSockets</h3>
+			<button onclick="fetchStudentList();">Fetch Student List</button>
+			<br />
+			<button onclick="fetchStudent();">Fetch Student</button>
+			<br />
+			<button onclick="searchStudent();">Search Student</button>
+			<br />
+			<button onclick="addStudent();">Add Student</button>
+			<br />
+			<button onclick="updateStudent();">Update Student</button>
+			<br />
+			<button onclick="deleteStudent();">Delete Student</button>
+			<p id="greetings"></p>
+			<br /><br /><br /><br />
+			<h3>Note: To test Spring Rest APIs, visit Swagger URI :  <b>/api/swagger-ui.html</b></h3>
+		</div>
+	</div>
+</body>
+</html>
